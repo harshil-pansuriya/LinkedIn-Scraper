@@ -3,28 +3,21 @@ from datetime import datetime
 import argparse
 
 from scripts.browser_automation import search_profiles
-from scripts.with_api import api_search
 from utils.logger import setup_logger
-
 logger = setup_logger(__name__)
 
 def main():
     parser = argparse.ArgumentParser(description='LinkedIn Profile Scraper')
     parser.add_argument('first_name', help='First name of the person to search')
     parser.add_argument('last_name', help='Last name of the person to search')
-    parser.add_argument('--method', choices=['api', 'browser'],default='api',help='Scraping method: api or browser (default: api)')
     args = parser.parse_args()
 
     try:
         print(f"\nSearching for: {args.first_name} {args.last_name}")
-        
-        if args.method == 'api':
-            results = api_search(args.first_name, args.last_name)
-        else:
-            results = search_profiles(args.first_name, args.last_name)
-        
+        results = search_profiles(args.first_name, args.last_name)
         if results:
-            save_results(results)
+            save_results(results) #save result in csv format
+            print(f"\nFound {len(results)} profiles!")
         else:
             print("\nNo profiles found!")
     except Exception as e:
