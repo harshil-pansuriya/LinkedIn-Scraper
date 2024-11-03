@@ -1,7 +1,5 @@
 selenium
 pandas
-linkedin-api
 python-dotenv
 webdriver_manager
 beautifulsoup4
-requests

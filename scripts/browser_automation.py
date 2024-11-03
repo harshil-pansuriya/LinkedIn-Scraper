@@ -23,9 +23,11 @@ def login(browser):
     try:
         browser.get(LINKEDIN_LOGIN_URL)
         time.sleep(3)
+        
+        #fill the email
         email_field = browser.find_element(By.ID, "username")
         email_field.send_keys(LINKEDIN_USERNAME)
-        
+        # fill password
         password_field = browser.find_element(By.ID, "password")
         password_field.send_keys(LINKEDIN_PASSWORD)
         
@@ -50,6 +52,7 @@ def search_profiles(first_name, last_name):
         time.sleep(3)
         
         results = []
+        # find profiles
         profiles = browser.find_elements(By.CSS_SELECTOR, "li.reusable-search__result-container")[:10]
         
         for profile in profiles:
@@ -78,12 +81,13 @@ def extract_profile_data(profile):
     # skip linkedin promotions
     if 'premium-upsell' in profile.get_attribute('class'):
         return None
-        
+    # scrap name
     name = soup.select_one('.entity-result__title-text span[aria-hidden="true"]')
     if not name or "LinkedIn Member" in name.text:
         return None
-        
+    # scrap job title   
     job = soup.select_one('.entity-result__primary-subtitle')
+    # scrap location
     location = soup.select_one('.entity-result__secondary-subtitle')
     
     profile_info= {
